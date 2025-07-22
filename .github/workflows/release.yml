@@ -1,0 +1,58 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Create release directory
+      run: |
+        mkdir -p release/injector
+        
+    - name: Download packet definitions
+      run: |
+        wget -O release/injector/c2s.lua https://github.com/sruon/XiPackets-definitions/releases/download/latest/c2s.lua
+        wget -O release/injector/s2c.lua https://github.com/sruon/XiPackets-definitions/releases/download/latest/s2c.lua
+        
+    - name: Copy addon files to release directory
+      run: |
+        cp injector.lua release/injector/
+        cp structs.lua release/injector/
+        
+    - name: Create zip archive
+      run: |
+        cd release
+        zip -r injector.zip injector/
+        
+    - name: Create Release
+      uses: actions/create-release@v1
+      id: create_release
+      with:
+        tag_name: ${{ github.run_number }}
+        release_name: Release ${{ github.run_number }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release/injector.zip
+        asset_name: injector.zip
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
