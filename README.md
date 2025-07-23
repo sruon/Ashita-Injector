@@ -2,6 +2,8 @@
 
 Inject FFXI packets through an ImgUi form.
 
+<img width="674" height="335" alt="Screenshot 2025-07-22 181922" src="https://github.com/user-attachments/assets/bf6313c2-085d-41f8-9a14-7d89d28fac0a" />
+
 ## Must read
 - Will **100% get you banned** from Retail or the PServer you're playing on.
 - Will **100% crash your client** if using bad values.
@@ -22,4 +24,4 @@ Decompress in your Ashita v4 `addons` folder.
 Use `/injector` to toggle the display.
 
 ## Credits
-- atom0s for XiPackets
+- atom0s for [XiPackets](https://github.com/atom0s/XiPackets/tree/main)
